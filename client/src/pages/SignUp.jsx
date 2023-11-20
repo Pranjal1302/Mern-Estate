@@ -1,11 +1,12 @@
 import { useState } from 'react'
 // import { flushSync } from 'react-dom';
-import {Link} from 'react-router-dom'
+import {Link ,useNavigate} from 'react-router-dom'
 
 export default function SignUp() {
   const [formdata,setformdata] = useState({})
   const [error, seterror] = useState(false);
   const [loading, setloading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) =>{
     setformdata({
       ...formdata,
@@ -25,11 +26,14 @@ export default function SignUp() {
       body:JSON.stringify(formdata),
     });
     const data = await res.json();
-    setloading(false);
+   
     if(data.success === false){
       seterror(true);
       return;
     }
+    setloading(false);
+    seterror(null);
+    navigate('/sign-in');
     } catch (error) {
       setloading(true);
       seterror(true);
